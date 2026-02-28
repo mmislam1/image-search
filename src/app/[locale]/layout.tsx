@@ -5,6 +5,8 @@ import StoreProvider from "./StoreProvider";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale, locales } from "@/lib/i18n";
 import { notFound } from "next/navigation";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +31,7 @@ export default async function RootLayout({
   params: { locale: Locale };
 }>) {
 
-  const { locale } = params;
+  const { locale } = await params;
 
   if (!locales.includes(locale)) notFound();
 
@@ -53,7 +55,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navbar/>
         <StoreProvider>{children}</StoreProvider>
+        <Footer/>
       </body>
     </html>
   );
