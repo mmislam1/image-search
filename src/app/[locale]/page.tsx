@@ -7,6 +7,8 @@ import Link from "next/link";
 import Section3 from "@/components/section3";
 import Section4 from "@/components/section4";
 import TestimonialSlider from "@/components/testimonialSlider";
+import BlogSection from "@/components/blogsection";
+import FinalSection from "@/components/finalsection";
 
 
 
@@ -66,6 +68,12 @@ const primary= { label: "무료로 시작 >", href: "/signup"  }
 
 
         <TestimonialSlider/>
+
+
+        <BlogSection/>
+
+
+        <FinalSection/>
 
 
       </div>
