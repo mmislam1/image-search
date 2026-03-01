@@ -7,6 +7,7 @@ import { Locale, locales } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import type { LayoutProps } from 'next';
 
 
 const geistSans = Geist({
@@ -45,7 +46,7 @@ type Props = {
 export default async function RootLayout({
   children,
   params,
-}: Props) {
+}:  LayoutProps<'/[locale]'>) {
   const { locale } = await params;
 
   if (!locales.includes(locale)) notFound();
