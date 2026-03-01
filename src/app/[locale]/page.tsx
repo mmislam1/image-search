@@ -5,6 +5,8 @@ import Link from "next/link";
   import { useEffect, useRef, useState } from "react";
   import TrustedCompanies from "@/components/trustedCompanies";
 import Section3 from "@/components/section3";
+import Section4 from "@/components/section4";
+import TestimonialSlider from "@/components/testimonialSlider";
 
 
 
@@ -58,6 +60,12 @@ const primary= { label: "무료로 시작 >", href: "/signup"  }
 
 
         <Section3/>
+
+
+        <Section4/>
+
+
+        <TestimonialSlider/>
 
 
       </div>
