@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono,Comfortaa } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { getDictionary } from "@/lib/dictionary";
@@ -16,6 +16,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+
+const comfortaa = Comfortaa({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-comfortaa",
 });
 
 export const metadata: Metadata = {
@@ -53,7 +60,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${comfortaa.variable} antialiased`}
       >
         <Navbar/>
         <StoreProvider>{children}</StoreProvider>

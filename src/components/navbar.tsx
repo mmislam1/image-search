@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 // next@16.1.6 · react@19.2.3 · zod@^4.3.6 · tailwindcss@^4
 
 import Link from "next/link";
@@ -33,7 +34,7 @@ const config: NavConfig = NavConfigSchema.parse({
     { label: "가격",    href: "/pricing"  },
     { label: "비즈니스", href: "/business" },
   ],
-  languages:       ["한국어", "English", "日本語", "中文"],
+  languages:       ["한국어", "English"],
   defaultLanguage: "한국어",
   ctaSecondary: { label: "문의하기",     href: "/contact" },
   ctaPrimary:   { label: "무료로 시작 >", href: "/signup"  },
@@ -74,11 +75,9 @@ export function StarIcon({
 function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2 flex-shrink-0 group text-gray-950">
-      <StarIcon
-        size={20}
-        className="transition-transform duration-300 group-hover:rotate-12"
-      />
-      <span className="text-[15px] font-semibold tracking-tight">Toostar</span>
+      
+      
+      <img src="/logo.svg" alt="logo" />
     </Link>
   );
 }
@@ -266,7 +265,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen]     = useState(false);
 
   return (
-    <header className="relative w-full bg-white border-b border-gray-100">
+    <header className="relative w-full bg-white py-6">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between gap-8">
 
         <Logo />

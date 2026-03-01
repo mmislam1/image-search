@@ -1,0 +1,64 @@
+import Image from "next/image";
+
+export default function Section3() {
+  const features = [
+    {
+      icon: "/icon1.svg",
+      title: "딥웹 탐지",
+      description: "일반 검색 엔진이 찾지 못하는 성인사이트, 불법 스트리밍 사이트까지 모두 검색합니다",
+    },
+    {
+      icon: "/icon2.svg",
+      title: "높은 정확도",
+      description: "AI 기반 이미지 매칭 기술로 변형된 이미지도 정확하게 찾아냅니다",
+    },
+    {
+      icon: "/icon3.svg",
+      title: "알림 서비스",
+      description: "새로운 일치 항목이 발견되면 즉시 알림을 받아 빠르게 대응할 수 있습니다",
+    },
+    {
+      icon: "/icon4.svg",
+      title: "안전한 보관",
+      description: "업로드한 이미지는 암호화되어 안전하게 보관됩니다. 개인정보 보호를 최우선으로 합니다",
+    },
+  ];
+
+  return (
+    <section className="w-full bg-white py-16 px-2">
+      {/* Header */}
+      <div className="mb-10">
+        <h2 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          콘텐츠 보호의 시작
+        </h2>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          개인정보 보호 및 보안이 기본적으로 포함된 ChatGPT가 제공하는 최고의 기능을 팀이 활용하도록 하세요.
+          <br className="hidden sm:block" />
+          간편하게 플랜 규모를 조정하고 옵션 크레딧을 추가할 수 있으며 언제든지 취소할 수 있습니다.
+        </p>
+      </div>
+
+      {/* Feature Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="bg-gray-100 rounded-xl p-6 flex flex-col gap-3"
+          >
+            <Image src={feature.icon} alt={feature.title} height={26} width={26}/>
+            <h3 className="text-base font-bold text-gray-900">{feature.title}</h3>
+            <p className="text-sm text-gray-500 leading-relaxed">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="text-center text-sm text-gray-500">
+        에이전시, 엔터프라이즈 역할에 레지던시가 필요하신가요?{" "}
+        <span className="font-semibold text-gray-900 cursor-pointer hover:underline">
+          세일즈 문의
+        </span>
+      </div>
+    </section>
+  );
+}

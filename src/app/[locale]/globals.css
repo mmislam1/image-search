@@ -123,4 +123,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .fc{
+    @apply flex items-center justify-center;
+  }
 }

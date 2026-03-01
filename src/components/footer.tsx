@@ -189,12 +189,14 @@ export default function Footer() {
 
       {/* ── Top section ─────────────────────────────────────────────────────── */}
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 pt-14 pb-16">
-        <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-8">
+        <div className="flex flex-row md:justify-between gap-12 md:gap-8">
 
           {/* Logo — top-left, star only, no wordmark */}
           <div className="flex-shrink-0">
             <Link href="/" aria-label="Toostar home" className="text-gray-950 block">
-              <StarIcon size={36} />
+            
+                    <img src="/logo2.svg" alt="logo2" />
+                
             </Link>
           </div>
 
