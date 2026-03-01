@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,13 +37,18 @@ export async function generateStaticParams() {
   }));
 }
 
+type Props = {
+  children: React.ReactNode;
+  params: { locale: "en"|"ko" };
+};
+
 export default async function RootLayout({
   children,
   params,
 }: Props) {
-  const { locale } = params;
+  const { locale } = await params;
 
-  //if (!locales.includes(locale)) notFound();
+  if (!locales.includes(locale)) notFound();
 
   return (
     <html lang={locale}>
