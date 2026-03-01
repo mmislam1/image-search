@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import type { LayoutProps } from 'next';
+import { ReactNode } from "react";
 
 
 const geistSans = Geist({
@@ -39,14 +40,14 @@ export async function generateStaticParams() {
 }
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { locale: "en"|"ko" };
 };
 
 export default async function RootLayout({
   children,
   params,
-}:  LayoutProps<'/[locale]'>) {
+}:  Props) {
   const { locale } = await params;
 
   if (!locales.includes(locale)) notFound();
