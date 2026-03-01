@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 };
 type Props={
   children: React.ReactNode;
-  params: { locale: Locale }
+  params: { locale: 'en'|'ko' }
 }
 export default async function RootLayout({
   children,
