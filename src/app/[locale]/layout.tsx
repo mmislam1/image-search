@@ -41,7 +41,7 @@ export async function generateStaticParams() {
 
 type Props = {
   children: ReactNode;
-  params: { locale: "en"|"ko" };
+  params: { locale: Locale };
 };
 
 export default async function RootLayout({
