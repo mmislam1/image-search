@@ -7,7 +7,7 @@ import { Locale, locales } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import type { LayoutProps } from 'next';
+
 import { ReactNode } from "react";
 
 
@@ -48,7 +48,7 @@ export default async function RootLayout({
   children,
   params,
 }:  Props) {
-  const { locale } = await params;
+  const { locale } = params;
 
   if (!locales.includes(locale)) notFound();
 
