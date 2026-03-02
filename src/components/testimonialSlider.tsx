@@ -125,9 +125,9 @@ export default function TestimonialSlider() {
           <div className="relative flex flex-col items-center justify-center p-10 gap-6">
             {/* Image */}
             <div
-              className={`transition-all duration-500 ease-in-out ${slideClass} w-62 h-62 md:w-92 md:h-92  overflow-hidden`}
+              className={`transition-all duration-500 ease-in-out ${slideClass} w-60 h-60 md:w-80 md:h-80 overflow-hidden`}
             >
-              <div className="w-full h-full bg-white/30 flex items-center justify-center text-white/60 text-sm tracking-widest">
+              <div className="relative w-full h-full bg-white/30 flex items-center justify-center text-white/60 text-sm tracking-widest">
                 {/* Replace with real <Image /> when images are available */}
                  <Image src={testimonial.image} alt={testimonial.author} fill className="object-cover" />
                 

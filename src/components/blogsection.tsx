@@ -46,7 +46,7 @@ const posts: BlogPost[] = [
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function BlogSection() {
   return (
-    <section className="w-full max-w-[1320px] mx-auto px-6 py-16">
+    <section className="w-full max-w-[1280px] mx-auto px-6 py-16">
       {/* Section heading — kept in Korean as per design */}
       <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 mb-10">
         블로그

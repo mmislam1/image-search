@@ -24,7 +24,7 @@ const primary= { label: "무료로 시작 >", href: "/signup"  }
 
   return (
     <div className="w-full fc ">
-      <div className="w-full md:min-w-7xl fc flex-col max-w-7xl md:px-10">
+      <div className="w-full fc flex-col max-w-7xl md:px-10">
 
 
         {/*   section 1   */}

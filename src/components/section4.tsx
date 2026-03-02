@@ -76,7 +76,7 @@ export default function Section4() {
       <div className="w-full mx-auto overflow-hidden">
         <div className="flex flex-col w-full md:flex-row items-stretch min-h-[420px]">
             <div className=" relative fc ">
-                <Image src="/i2.png" alt="sample2" height={720} width={720}/>
+                <Image src="/i2.png" alt="sample2" height={520} width={520}/>
             </div>
 
          

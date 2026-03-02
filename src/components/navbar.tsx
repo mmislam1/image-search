@@ -86,7 +86,7 @@ function Logo() {
 
 function DesktopNav({ items }: { items: NavItem[] }) {
   return (
-    <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-8">
+    <nav aria-label="Primary navigation" className="hidden font-semibold md:flex items-center gap-8">
       {items.map((item) => (
         <Link
           key={item.href}

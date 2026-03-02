@@ -59,15 +59,15 @@ export default function FinalSection() {
       </section>
 
       {/* CTA Footer Banner */}
-      <section className="bg-gray-100 px-16 py-10 flex items-center justify-between">
-        <h2 className="text-4xl font-black text-gray-900 tracking-tight">
+      <section className="bg-gray-100 px-4 md:px-16 py-10 flex items-center justify-between">
+        <h2 className="mr-3 text-4xl font-black text-gray-900 tracking-tight">
           {/* Korean display: 365일 동안 <strong>무료로 시작하기</strong> */}
           <span className="font-normal">365일 동안&nbsp;</span>
           <span className="font-black">무료로 시작하기</span>
           {/* English: {t("365일 동안 무료로 시작하기")} */}
         </h2>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col  md:flex-row items-center gap-4">
           {/* Ghost button */}
           <button className="text-sm text-gray-700 hover:text-gray-900 transition-colors px-2 py-1">
             {/* Korean display */}
