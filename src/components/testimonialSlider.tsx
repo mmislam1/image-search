@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Testimonial {
   id: number;
@@ -107,25 +108,25 @@ export default function TestimonialSlider() {
     : "opacity-100 translate-x-0";
 
   return (
-    <section className="w-full py-16 px-2 font-[Pretendard,_'Noto_Sans_KR',_sans-serif]">
+    <section className="w-full py-16 font-[Pretendard,_'Noto_Sans_KR',_sans-serif]">
       {/* Title */}
       <h2 className="text-center text-4xl font-black tracking-tight text-gray-900 mb-10">
         신뢰할 수 있는 정확한 탐지
       </h2>
 
       {/* Card */}
-      <div className="w-full mx-auto overflow-hidden px-2 "
+      <div className="w-full mx-auto overflow-hidden flow "
         style={{
-          background: "linear-gradient(135deg, #ead8fd 0%, #ffdcef 30%, #fff7d8 60%, #ffdff1 90%, #ecdaff 100%)",
+          background: "linear-gradient(135deg, #ddc0fc 0%, #ffc0e3 30%, #fdf1bf 60%, #f8b6dc 90%, #ddc0fc 100%)",
         }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 min-h-[360px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 ">
 
           {/* Left — Image + Nav */}
-          <div className="relative flex flex-col items-center justify-center p-10 gap-6">
+          <div className="relative flex flex-col items-center justify-center min-h-[360px] md:min-h-[460px]">
             {/* Image */}
             <div
-              className={`transition-all duration-500 ease-in-out ${slideClass} w-60 h-60 md:w-80 md:h-80 overflow-hidden`}
+              className={`transition-all duration-500 ease-in-out ${slideClass} w-full h-full md:w-full md:h-full overflow-hidden`}
             >
               <div className="relative w-full h-full bg-white/30 flex items-center justify-center text-white/60 text-sm tracking-widest">
                 {/* Replace with real <Image /> when images are available */}
@@ -135,27 +136,28 @@ export default function TestimonialSlider() {
             </div>
 
             {/* Navigation */}
-            <div className="flex gap-3 mt-2">
+            <div className="absolute top-[300] md:top-[400] fc gap-3 mt-2">
               <button
                 onClick={handlePrev}
                 aria-label="Previous"
-                className="w-9 h-9 rounded-full bg-white/50 hover:bg-white/80 transition-all flex items-center justify-center text-gray-700 hover:scale-105 active:scale-95"
+                className="w-9 h-9 rounded-full flow bg-[linear-gradient(135deg,#ddc0fc_0%,#ffc0e3_30%,#fdf1bf_60%,#f8b6dc_90%,#ddc0fc_100%)] flex items-center justify-center text-gray-700 hover:scale-105 active:scale-95"
               >
-                ←
+               <ChevronLeft/> 
               </button>
               <button
                 onClick={handleNext}
                 aria-label="Next"
-                className="w-9 h-9 rounded-full bg-white/50 hover:bg-white/80 transition-all flex items-center justify-center text-gray-700 hover:scale-105 active:scale-95"
+                className="w-9 h-9 rounded-full flow bg-[linear-gradient(135deg,#ddc0fc_0%,#ffc0e3_30%,#fdf1bf_60%,#f8b6dc_90%,#ddc0fc_100%)] flex items-center justify-center text-gray-700 hover:scale-105 active:scale-95"
+                
               >
-                →
+                <ChevronRight/>
               </button>
             </div>
           </div>
 
           {/* Right — Quote */}
           <div
-            className="relative flex-1 flex flex-col justify-center p-8 md:p-10 m-3 bg-white/60"
+            className="relative flex-1 flex flex-col justify-center p-8 md:p-10  bg-white/60"
            
           >
             {/* Top dots */}

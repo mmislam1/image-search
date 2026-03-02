@@ -128,4 +128,15 @@
   .fc{
     @apply flex items-center justify-center;
   }
+
+  @keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.flow {
+  background-size: 300% 300%; /* Stretch it so there is room to move */
+  animation: gradient-flow 15s ease infinite; /* 15s for a slow, dreamy feel */
+}
 }
