@@ -3,7 +3,7 @@ import { Geist, Geist_Mono,Comfortaa } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { getDictionary } from "@/lib/dictionary";
-import { Locale, locales } from "@/lib/i18n";
+import { Locale, locales,isLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -41,7 +41,7 @@ export function generateStaticParams() {
 
 type Props = {
   children: ReactNode;
-  params: { locale: "en" | "ko" };
+  params: Promise<{ locale: string }>;
 };
 
 export default async function RootLayout({
@@ -50,14 +50,16 @@ export default async function RootLayout({
 }:  Props) {
   const { locale } = await params;
 
-  if (!locales.includes(locale)) notFound();
+  if (!isLocale(locale)) {
+    notFound();
+  }
 
   return (
     <html lang={locale}>
       <body className={`${comfortaa.className} antialiased`}>
-        <Navbar />
-        <StoreProvider>{children}</StoreProvider>
-        <Footer />
+        
+        <StoreProvider><Navbar />{children}<Footer /></StoreProvider>
+        
       </body>
     </html>
   );

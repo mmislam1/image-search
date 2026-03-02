@@ -147,7 +147,7 @@ function FooterLangSwitcher({
           <circle cx="12" cy="12" r="10" />
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
         </svg>
-        {selected}
+        <p className="hidden md:block">{selected}</p>
       </button>
 
       {open && (
@@ -201,7 +201,7 @@ export default function Footer() {
           </div>
 
           {/* Link columns — top-right */}
-          <div className="flex flex-col sm:flex-row gap-10 sm:gap-20 md:gap-28 lg:gap-36">
+          <div className="flex flex-row gap-10 sm:gap-20 md:gap-28 lg:gap-36">
             {config.columns.map((col) => (
               <div key={col.heading} className="flex flex-col gap-5">
                 {/* Column heading */}
@@ -233,7 +233,7 @@ export default function Footer() {
         <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[56px] flex items-center justify-between gap-4">
 
           {/* Left: copyright + cookie */}
-          <div className="flex items-center gap-3 text-[12px] text-gray-500">
+          <div className="flex flex-col md:flex-row items-center gap-1 md:gap-3 text-[12px] text-gray-500">
             <span>{config.copyright}</span>
             <Link
               href={config.cookieHref}
