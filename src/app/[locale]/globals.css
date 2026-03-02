@@ -137,6 +137,6 @@
 
 .flow {
   background-size: 300% 300%; /* Stretch it so there is room to move */
-  animation: gradient-flow 15s ease infinite; /* 15s for a slow, dreamy feel */
+  animation: gradient-flow 4s ease infinite; /* 15s for a slow, dreamy feel */
 }
 }

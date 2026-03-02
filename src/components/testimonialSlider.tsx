@@ -123,10 +123,10 @@ export default function TestimonialSlider() {
         <div className="grid grid-cols-1 md:grid-cols-2 ">
 
           {/* Left — Image + Nav */}
-          <div className="relative flex flex-col items-center justify-center min-h-[360px] md:min-h-[460px]">
+          <div className="relative flex flex-col items-center justify-center min-h-[360px] md:min-h-[460px] overflow-hidden">
             {/* Image */}
             <div
-              className={`transition-all duration-500 ease-in-out ${slideClass} w-full h-full md:w-full md:h-full overflow-hidden`}
+              className={`transition-all duration-500 ease-in-out ${slideClass} w-full h-full md:w-full md:h-full`}
             >
               <div className="relative w-full h-full bg-white/30 flex items-center justify-center text-white/60 text-sm tracking-widest">
                 {/* Replace with real <Image /> when images are available */}
