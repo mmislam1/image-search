@@ -16,7 +16,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    image: "/icon1.svg",
+    image: "/r1.png",
     quote:
       "전혀 예상하지 못한 곳에서 발견 된 내 사진은 수익이 증가했고, 처리 시간이단축되어 결과가 폭발적으로 늘었습니다.",
     author: "김지현",
@@ -25,7 +25,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 2,
-    image: "/icon2.svg",
+    image: "/r2.png",
     quote:
       "서비스를 도입한 이후로 저작권 침해 사례가 눈에 띄게 줄었습니다. 정말 믿을 수 있는 탐지 솔루션입니다.",
     author: "이민준",
@@ -34,7 +34,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 3,
-    image: "/icon3.svg",
+    image: "/r3.png",
     quote:
       "정확성이 뛰어나고 처리 속도가 빠릅니다. 우리 팀의 업무 효율이 두 배 이상 향상되었어요.",
     author: "박서연",
