@@ -1,8 +1,8 @@
-"use client"
+//"use client"
 
 import Image from "next/image";
 import Link from "next/link";
-  import { useEffect, useRef, useState } from "react";
+  //import { useEffect, useRef, useState } from "react";
   import TrustedCompanies from "@/components/trustedCompanies";
 import Section3 from "@/components/section3";
 import Section4 from "@/components/section4";

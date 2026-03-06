@@ -1,6 +1,5 @@
-// features/user/userSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "./store.ts";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { RootState } from "./store";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface UserProfile {
@@ -21,82 +20,77 @@ export interface SignInPayload {
   password: string;
 }
 
+interface AuthResponse {
+  user: UserProfile;
+  token: string;
+}
+
+type AsyncStatus = "idle" | "loading" | "success" | "error";
+
 interface UserState {
   user: UserProfile | null;
   token: string | null;
-  signupStatus: "idle" | "loading" | "success" | "error";
-  signinStatus: "idle" | "loading" | "success" | "error";
-  emailVerifyStatus: "idle" | "loading" | "success" | "error";
+  signupStatus: AsyncStatus;
+  signinStatus: AsyncStatus;
+  emailVerifyStatus: AsyncStatus;
   error: string | null;
 }
 
-// ─── Fake API (replace with real endpoints) ───────────────────────────────────
-const api = {
-  verifyEmail: (email: string) =>
-    fetch("/api/auth/verify-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    }).then(r => { if (!r.ok) throw new Error("VERIFY_FAILED"); return r.json(); }),
+// ─── API layer (swap base URL / headers for your real backend) ────────────────
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 
-  signup: (payload: SignUpPayload) =>
-    fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }).then(r => { if (!r.ok) throw new Error("SIGNUP_FAILED"); return r.json(); }),
-
-  signin: (payload: SignInPayload) =>
-    fetch("/api/auth/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }).then(r => { if (!r.ok) throw new Error("INVALID_CREDENTIALS"); return r.json(); }),
-
-  googleAuth: () =>
-    fetch("/api/auth/google", { method: "POST" })
-      .then(r => { if (!r.ok) throw new Error("GOOGLE_FAILED"); return r.json(); }),
-};
+async function apiFetch<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data?.code ?? res.status.toString());
+  }
+  return res.json();
+}
 
 // ─── Async Thunks ─────────────────────────────────────────────────────────────
-export const verifyEmailThunk = createAsyncThunk(
+export const verifyEmailThunk = createAsyncThunk<void, string>(
   "user/verifyEmail",
-  async (email: string, { rejectWithValue }) => {
+  async (email, { rejectWithValue }) => {
     try {
-      return await api.verifyEmail(email);
+      await apiFetch("/api/auth/verify-email", { email });
     } catch (e: any) {
       return rejectWithValue(e.message);
     }
   }
 );
 
-export const signUpThunk = createAsyncThunk(
+export const signUpThunk = createAsyncThunk<AuthResponse, SignUpPayload>(
   "user/signUp",
-  async (payload: SignUpPayload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      return await api.signup(payload);              // { user, token }
+      return await apiFetch<AuthResponse>("/api/auth/signup", payload);
     } catch (e: any) {
       return rejectWithValue(e.message);
     }
   }
 );
 
-export const signInThunk = createAsyncThunk(
+export const signInThunk = createAsyncThunk<AuthResponse, SignInPayload>(
   "user/signIn",
-  async (payload: SignInPayload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      return await api.signin(payload);              // { user, token }
+      return await apiFetch<AuthResponse>("/api/auth/signin", payload);
     } catch (e: any) {
       return rejectWithValue(e.message);
     }
   }
 );
 
-export const googleAuthThunk = createAsyncThunk(
+export const googleAuthThunk = createAsyncThunk<AuthResponse>(
   "user/googleAuth",
   async (_, { rejectWithValue }) => {
     try {
-      return await api.googleAuth();
+      return await apiFetch<AuthResponse>("/api/auth/google", {});
     } catch (e: any) {
       return rejectWithValue(e.message);
     }
@@ -117,14 +111,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logout(state) {
-      state.user = null;
-      state.token = null;
-      state.signupStatus = "idle";
-      state.signinStatus = "idle";
-      state.emailVerifyStatus = "idle";
-      state.error = null;
-    },
+    logout: () => initialState,
     resetAuthStatus(state) {
       state.signupStatus = "idle";
       state.signinStatus = "idle";
@@ -136,65 +123,52 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // ── verifyEmail ──
+    // verifyEmail
     builder
-      .addCase(verifyEmailThunk.pending, (state) => {
-        state.emailVerifyStatus = "loading";
-      })
-      .addCase(verifyEmailThunk.fulfilled, (state) => {
-        state.emailVerifyStatus = "success";
-      })
-      .addCase(verifyEmailThunk.rejected, (state, action) => {
-        state.emailVerifyStatus = "error";
-        state.error = action.payload as string;
+      .addCase(verifyEmailThunk.pending, (s) => { s.emailVerifyStatus = "loading"; })
+      .addCase(verifyEmailThunk.fulfilled, (s) => { s.emailVerifyStatus = "success"; })
+      .addCase(verifyEmailThunk.rejected, (s, a) => {
+        s.emailVerifyStatus = "error";
+        s.error = a.payload as string;
       });
 
-    // ── signUp ──
+    // signUp
     builder
-      .addCase(signUpThunk.pending, (state) => {
-        state.signupStatus = "loading";
-        state.error = null;
+      .addCase(signUpThunk.pending, (s) => { s.signupStatus = "loading"; s.error = null; })
+      .addCase(signUpThunk.fulfilled, (s, a) => {
+        s.signupStatus = "success";
+        s.user = a.payload.user;
+        s.token = a.payload.token;
       })
-      .addCase(signUpThunk.fulfilled, (state, action) => {
-        state.signupStatus = "success";
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
-      .addCase(signUpThunk.rejected, (state, action) => {
-        state.signupStatus = "error";
-        state.error = action.payload as string;
+      .addCase(signUpThunk.rejected, (s, a) => {
+        s.signupStatus = "error";
+        s.error = a.payload as string;
       });
 
-    // ── signIn ──
+    // signIn
     builder
-      .addCase(signInThunk.pending, (state) => {
-        state.signinStatus = "loading";
-        state.error = null;
+      .addCase(signInThunk.pending, (s) => { s.signinStatus = "loading"; s.error = null; })
+      .addCase(signInThunk.fulfilled, (s, a) => {
+        s.signinStatus = "success";
+        s.user = a.payload.user;
+        s.token = a.payload.token;
       })
-      .addCase(signInThunk.fulfilled, (state, action) => {
-        state.signinStatus = "success";
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
-      .addCase(signInThunk.rejected, (state, action) => {
-        state.signinStatus = "error";
-        state.error = action.payload as string;
+      .addCase(signInThunk.rejected, (s, a) => {
+        s.signinStatus = "error";
+        s.error = a.payload as string;
       });
 
-    // ── googleAuth (shared signin flow) ──
+    // googleAuth (reuses signinStatus)
     builder
-      .addCase(googleAuthThunk.pending, (state) => {
-        state.signinStatus = "loading";
-        state.error = null;
+      .addCase(googleAuthThunk.pending, (s) => { s.signinStatus = "loading"; s.error = null; })
+      .addCase(googleAuthThunk.fulfilled, (s, a) => {
+        s.signinStatus = "success";
+        s.user = a.payload.user;
+        s.token = a.payload.token;
       })
-      .addCase(googleAuthThunk.fulfilled, (state, action) => {
-        state.signinStatus = "success";
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
-      .addCase(googleAuthThunk.rejected, (state, action) => {
-        state.signinStatus = "error";
-        state.error = action.payload as string;
+      .addCase(googleAuthThunk.rejected, (s, a) => {
+        s.signinStatus = "error";
+        s.error = a.payload as string;
       });
   },
 });
@@ -204,10 +178,10 @@ export const { logout, resetAuthStatus, resetEmailVerify } = userSlice.actions;
 // ─── Selectors ────────────────────────────────────────────────────────────────
 export const selectUser              = (s: RootState) => s.user.user;
 export const selectToken             = (s: RootState) => s.user.token;
+export const selectIsAuthenticated   = (s: RootState) => !!s.user.token;
 export const selectSignupStatus      = (s: RootState) => s.user.signupStatus;
 export const selectSigninStatus      = (s: RootState) => s.user.signinStatus;
 export const selectEmailVerifyStatus = (s: RootState) => s.user.emailVerifyStatus;
 export const selectAuthError         = (s: RootState) => s.user.error;
-export const selectIsAuthenticated   = (s: RootState) => !!s.user.token;
 
 export default userSlice.reducer;
