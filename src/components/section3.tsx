@@ -28,7 +28,7 @@ export default function Section3() {
     <section className="w-full bg-white py-16 px-2">
       {/* Header */}
       <div className="mb-10">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
+        <h2 className=" text-2xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
           콘텐츠 보호의 시작
         </h2>
         <p className="text-sm text-gray-600 leading-relaxed">

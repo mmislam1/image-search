@@ -60,7 +60,7 @@ export default function FinalSection() {
 
       {/* CTA Footer Banner */}
       <section className="bg-gray-100 px-4 md:px-16 py-10 flex items-center justify-between">
-        <h2 className="mr-3 text-4xl font-black text-gray-900 tracking-tight">
+        <h2 className="mr-3  text-2xl md:text-5xl font-black text-gray-900 tracking-tight">
           {/* Korean display: 365일 동안 <strong>무료로 시작하기</strong> */}
           <span className="font-normal">365일 동안&nbsp;</span>
           <span className="font-black">무료로 시작하기</span>
