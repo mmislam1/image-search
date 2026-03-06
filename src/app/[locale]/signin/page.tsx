@@ -112,7 +112,7 @@ export default function SignInPage({ params }: SignInPageProps) {
       <div className="bg-white w-full max-w-sm rounded-2xl shadow-sm px-7 py-10">
 
         {/* Title */}
-        <h1 className=" text-2xl md:text-5xl font-black text-center text-gray-900 mb-7 tracking-tight">
+        <h1 className=" text-2xl md:text-4xl font-black text-center text-gray-900 mb-7 tracking-tight">
           {t.title}
         </h1>
 

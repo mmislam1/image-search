@@ -31,7 +31,7 @@ const primary= { label: "무료로 시작 >", href: "/signup"  }
 
         <div className="flex flex-col-reverse p-2 md:flex-row md:my-10 w-full md:gap-12">
           <div className="flex flex-col w-full md:w-[55%] md:h-[350px]">
-            <h1 className="font-semibold text-2xl md:text-5xl my-14">역추적 검색엔진은
+            <h1 className="font-semibold text-2xl md:text-4xl my-14">역추적 검색엔진은
 쉬지않고 당신의 이미지를
 발견합니다 </h1>
             <p className="">회사 도구와 연결하고 데이터 보안을 유지하고 팀이 진행하는 모든 프로젝트를 개선하세요. 여러분이 아는 챗피티기가 업무용으로 설계 되었습니다.</p>

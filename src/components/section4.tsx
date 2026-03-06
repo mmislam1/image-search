@@ -45,7 +45,7 @@ export default function Section4() {
     <section className="bg-white py-20 px-4 w-full">
       {/* Heading */}
       <div className="text-center mb-10">
-        <h2 className="text-2xl md:text-5xl font-black text-gray-900 leading-tight whitespace-pre-line tracking-tight">
+        <h2 className="text-2xl md:text-4xl font-black text-gray-900 leading-tight whitespace-pre-line tracking-tight">
           {t.heading}
         </h2>
         <p className="mt-5 text-gray-400 text-sm md:text-base leading-relaxed whitespace-pre-line">
@@ -86,7 +86,7 @@ export default function Section4() {
             <p className="text-md font-semibold text-gray-700  uppercase mb-3">
               {t.cardLabel}
             </p>
-            <h3 className=" text-2xl md:text-5xl font-black text-gray-900 leading-snug mb-4">
+            <h3 className=" text-2xl md:text-4xl font-black text-gray-900 leading-snug mb-4">
               {t.cardTitle}
             </h3>
             <p className="text-lg text-gray-600 font-semibold leading-relaxed">{t.cardBody}</p>

@@ -110,7 +110,7 @@ export default function TestimonialSlider() {
   return (
     <section className="w-full py-16 font-[Pretendard,_'Noto_Sans_KR',_sans-serif]">
       {/* Title */}
-      <h2 className="text-center  text-2xl md:text-5xl font-black tracking-tight text-gray-900 mb-10">
+      <h2 className="text-center  text-2xl md:text-4xl font-black tracking-tight text-gray-900 mb-10">
         신뢰할 수 있는 정확한 탐지
       </h2>
 
@@ -164,7 +164,7 @@ export default function TestimonialSlider() {
             <Dots total={TOTAL_DOTS} filled={current + 1} position="top" />
 
             {/* Quote mark */}
-            <div className=" text-2xl md:text-5xl font-gray-600 text-gray-700/80 leading-none mb-3 mt-4">
+            <div className=" text-2xl md:text-4xl font-gray-600 text-gray-700/80 leading-none mb-3 mt-4">
               ❝
             </div>
 
