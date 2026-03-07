@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -96,13 +96,14 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface SignUpPageProps {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function SignUpPage({ params }: SignUpPageProps) {
-  const locale = (params.locale ?? "ko") as Locale;
-  const t      = messages[locale] ?? messages.ko;
+  const { locale } = use(params);
+
+  const t = messages[locale] ?? messages.ko;
 
   const dispatch      = useAppDispatch();
   const router        = useRouter();
@@ -170,8 +171,8 @@ export default function SignUpPage({ params }: SignUpPageProps) {
 
   // ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-sm rounded-2xl shadow-sm px-7 py-10">
+    <div className="min-h-screen flex items-start justify-center ">
+      <div className="mt-10 bg-white w-full max-w-md shadow-sm px-7 py-10 border border-gray-200 rounded-sm">
 
         {/* Title */}
         <h1 className=" text-2xl md:text-4xl font-black text-center text-gray-900 mb-7 tracking-tight">
@@ -182,7 +183,7 @@ export default function SignUpPage({ params }: SignUpPageProps) {
         <button
           onClick={handleGoogle}
           disabled={isLoading}
-          className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-xl py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition mb-5 disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-sm py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition mb-5 disabled:opacity-50"
         >
           {isLoading ? (
             <Loader2 size={16} className="animate-spin" />
@@ -194,9 +195,9 @@ export default function SignUpPage({ params }: SignUpPageProps) {
 
         {/* Divider */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="flex-1 h-px bg-gray-200" />
+          <div className="flex-1 h-px bg-gray-300" />
           <span className="text-xs text-gray-400 font-medium">{t.or}</span>
-          <div className="flex-1 h-px bg-gray-200" />
+          <div className="flex-1 h-px bg-gray-300" />
         </div>
 
         {/* Name */}
@@ -309,7 +310,7 @@ export default function SignUpPage({ params }: SignUpPageProps) {
           <label className="flex items-center gap-3 cursor-pointer group select-none">
             <div
               onClick={() => setField("isAdult", !form.isAdult)}
-              className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition ${
+              className={`w-5 h-5 rounded-sm border-2 flex items-center justify-center shrink-0 transition ${
                 form.isAdult
                   ? "bg-blue-500 border-blue-500"
                   : "border-gray-300 group-hover:border-blue-400"
@@ -386,7 +387,7 @@ function EyeToggle({ show, onToggle }: { show: boolean; onToggle: () => void }) 
 
 function ErrorBanner({ msg }: { msg: string }) {
   return (
-    <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 mb-4">
+    <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-sm px-4 py-2.5 mb-4">
       <X size={13} className="text-red-500 shrink-0" />
       <p className="text-xs text-red-500 font-medium">{msg}</p>
     </div>
@@ -406,7 +407,7 @@ function GoogleIcon() {
 
 // ─── Class name helpers ───────────────────────────────────────────────────────
 const baseInput =
-  "w-full border rounded-xl py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-blue-50";
+  "w-full border rounded-sm py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-blue-50";
 
 function inputCls(hasError: boolean | undefined, spacing: string) {
   return `${baseInput} ${spacing} ${
@@ -427,15 +428,15 @@ function confirmInputCls(value: string, match: boolean) {
 
 function verifyBtnCls(verified: boolean, verifying: boolean) {
   const base =
-    "flex items-center gap-1.5 text-xs font-bold px-3 py-2.5 rounded-xl transition whitespace-nowrap disabled:cursor-not-allowed";
-  if (verified) return `${base} bg-green-50 text-green-600 border border-green-200`;
-  if (verifying) return `${base} bg-blue-50 text-blue-400 border border-blue-100`;
+    "flex items-center gap-1.5 text-xs font-bold px-3 py-2.5 rounded-sm transition whitespace-nowrap disabled:cursor-not-allowed";
+  if (verified) return `${base} bg-green-100 text-green-600 border border-green-200`;
+  if (verifying) return `${base} bg-blue-100 text-blue-400 border border-blue-100`;
   return `${base} bg-gray-100 text-gray-500 hover:bg-blue-50 hover:text-blue-600`;
 }
 
 function submitBtnCls(enabled: boolean) {
   const base =
-    "w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition";
+    "w-full py-3.5 rounded-sm text-sm font-bold flex items-center justify-center gap-2 transition";
   return enabled
     ? `${base} bg-blue-500 text-white hover:bg-blue-600 shadow-md shadow-blue-100`
     : `${base} bg-gray-100 text-gray-400 cursor-not-allowed`;

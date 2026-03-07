@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, X, Loader2, Mail, Lock, LogIn } from "lucide-react";
@@ -56,12 +56,12 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface SignInPageProps {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function SignInPage({ params }: SignInPageProps) {
-  const locale = (params.locale ?? "ko") as Locale;
+  const {locale} = use(params) 
   const t      = messages[locale] ?? messages.ko;
 
   const dispatch     = useAppDispatch();
@@ -108,8 +108,8 @@ export default function SignInPage({ params }: SignInPageProps) {
 
   // ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-sm rounded-2xl shadow-sm px-7 py-10">
+    <div className="min-h-screen flex items-start justify-center p-4">
+      <div className="mt-10 bg-white w-full max-w-sm rounded-sm shadow-sm px-7 py-10 border border-gray-200">
 
         {/* Title */}
         <h1 className=" text-2xl md:text-4xl font-black text-center text-gray-900 mb-7 tracking-tight">
@@ -120,7 +120,7 @@ export default function SignInPage({ params }: SignInPageProps) {
         <button
           onClick={handleGoogle}
           disabled={isLoading}
-          className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-xl py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition mb-5 disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-sm py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition mb-5 disabled:opacity-50"
         >
           {isLoading ? <Loader2 size={16} className="animate-spin" /> : <GoogleIcon />}
           {t.continueGoogle}
@@ -192,7 +192,7 @@ export default function SignInPage({ params }: SignInPageProps) {
 
         {/* Error banner */}
         {signinStatus === "error" && serverError && (
-          <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 mb-4">
+          <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-sm px-4 py-2.5 mb-4">
             <X size={13} className="text-red-500 shrink-0" />
             <p className="text-xs text-red-500 font-medium">{errorMsg}</p>
           </div>
@@ -240,7 +240,7 @@ function GoogleIcon() {
 
 // ─── Class name helpers ───────────────────────────────────────────────────────
 const baseInput =
-  "w-full border rounded-xl pl-9 pr-10 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-blue-50";
+  "w-full border rounded-sm pl-9 pr-10 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-blue-50";
 
 function inputCls(hasError: boolean | undefined) {
   return `${baseInput} ${
@@ -252,7 +252,7 @@ function inputCls(hasError: boolean | undefined) {
 
 function submitBtnCls(enabled: boolean) {
   const base =
-    "w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition";
+    "w-full py-3.5 rounded-sm text-sm font-bold flex items-center justify-center gap-2 transition";
   return enabled
     ? `${base} bg-blue-500 text-white hover:bg-blue-600 shadow-md shadow-blue-100`
     : `${base} bg-gray-100 text-gray-400 cursor-not-allowed`;

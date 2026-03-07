@@ -64,7 +64,11 @@ export const verifyEmailThunk = createAsyncThunk<void, string>(
   }
 );
 
-export const signUpThunk = createAsyncThunk<AuthResponse, SignUpPayload>(
+export const signUpThunk = createAsyncThunk<
+  AuthResponse,
+  SignUpPayload,
+  { rejectValue: string }
+>(
   "user/signUp",
   async (payload, { rejectWithValue }) => {
     try {
@@ -75,7 +79,11 @@ export const signUpThunk = createAsyncThunk<AuthResponse, SignUpPayload>(
   }
 );
 
-export const signInThunk = createAsyncThunk<AuthResponse, SignInPayload>(
+export const signInThunk = createAsyncThunk<
+  AuthResponse,
+  SignInPayload,
+  { rejectValue: string }
+>(
   "user/signIn",
   async (payload, { rejectWithValue }) => {
     try {
@@ -86,7 +94,11 @@ export const signInThunk = createAsyncThunk<AuthResponse, SignInPayload>(
   }
 );
 
-export const googleAuthThunk = createAsyncThunk<AuthResponse>(
+export const googleAuthThunk = createAsyncThunk<
+  AuthResponse,
+  void,
+  { rejectValue: string }
+>(
   "user/googleAuth",
   async (_, { rejectWithValue }) => {
     try {
@@ -142,7 +154,7 @@ const userSlice = createSlice({
       })
       .addCase(signUpThunk.rejected, (s, a) => {
         s.signupStatus = "error";
-        s.error = a.payload as string;
+        s.error = a.payload ?? "Unknown error";
       });
 
     // signIn
@@ -155,7 +167,7 @@ const userSlice = createSlice({
       })
       .addCase(signInThunk.rejected, (s, a) => {
         s.signinStatus = "error";
-        s.error = a.payload as string;
+        s.error = a.payload ?? "Unknown error";
       });
 
     // googleAuth (reuses signinStatus)
@@ -168,7 +180,7 @@ const userSlice = createSlice({
       })
       .addCase(googleAuthThunk.rejected, (s, a) => {
         s.signinStatus = "error";
-        s.error = a.payload as string;
+        s.error = a.payload ?? "Unknown error";
       });
   },
 });
