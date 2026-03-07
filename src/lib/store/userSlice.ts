@@ -53,7 +53,7 @@ async function apiFetch<T>(path: string, body: unknown): Promise<T> {
 }
 
 // ─── Async Thunks ─────────────────────────────────────────────────────────────
-export const verifyEmailThunk = createAsyncThunk<void, string>(
+/*export const verifyEmailThunk = createAsyncThunk<void, string>(
   "user/verifyEmail",
   async (email, { rejectWithValue }) => {
     try {
@@ -62,7 +62,7 @@ export const verifyEmailThunk = createAsyncThunk<void, string>(
       return rejectWithValue(e.message);
     }
   }
-);
+);*/
 
 export const signUpThunk = createAsyncThunk<
   AuthResponse,
@@ -135,14 +135,7 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // verifyEmail
-    builder
-      .addCase(verifyEmailThunk.pending, (s) => { s.emailVerifyStatus = "loading"; })
-      .addCase(verifyEmailThunk.fulfilled, (s) => { s.emailVerifyStatus = "success"; })
-      .addCase(verifyEmailThunk.rejected, (s, a) => {
-        s.emailVerifyStatus = "error";
-        s.error = a.payload as string;
-      });
+    
 
     // signUp
     builder

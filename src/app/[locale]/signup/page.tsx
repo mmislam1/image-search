@@ -126,7 +126,7 @@ export default function SignUpPage({ params }: SignUpPageProps) {
 
   // ── Derived state ──────────────────────────────────────────
   const emailOk    = EMAIL_RE.test(form.email);
-  const isVerified = verifyStatus === "success";
+  
   const verifying  = verifyStatus === "loading";
   const pwAllPass  = PW_RULES.every((r) => r.test(form.password));
   const pwMatch    = form.password !== "" && form.password === form.confirm;
@@ -135,17 +135,15 @@ export default function SignUpPage({ params }: SignUpPageProps) {
   const canSubmit =
     form.name.trim() !== "" &&
     emailOk &&
-    isVerified &&
     pwAllPass &&
     pwMatch &&
     form.isAdult &&
     !isLoading;
 
+    
+
   // ── Handlers ───────────────────────────────────────────────
-  const handleVerify = () => {
-    if (!emailOk || isVerified || verifying) return;
-    dispatch(verifyEmailThunk(form.email));
-  };
+  
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
@@ -232,19 +230,7 @@ export default function SignUpPage({ params }: SignUpPageProps) {
                 className={inputCls(touched.email && !emailOk, "pl-9 pr-4")}
               />
             </div>
-            <button
-              onClick={handleVerify}
-              disabled={!emailOk || isVerified || verifying}
-              className={verifyBtnCls(isVerified, verifying)}
-            >
-              {verifying ? (
-                <><Loader2 size={11} className="animate-spin" />{t.verifying}</>
-              ) : isVerified ? (
-                <><Check size={11} />{t.verified}</>
-              ) : (
-                t.verify
-              )}
-            </button>
+            
           </div>
           <FieldError show={touched.email && !emailOk} msg={t.emailInvalid} />
         </div>
