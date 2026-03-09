@@ -6,6 +6,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { z } from "zod";
 import { StarIcon } from "@/components/navbar"; // shared — single source of truth
+import { useRouter, usePathname } from "next/navigation";
+
+
+
+
 
 // ─── Zod v4 schemas ───────────────────────────────────────────────────────────
 
@@ -74,7 +79,7 @@ const config: FooterConfig = FooterConfigSchema.parse({
   copyright:       "toostar@2026",
   cookieLabel:     "쿠키 관리",
   cookieHref:      "/cookies",
-  languages:       ["한국어", "English", "日本語", "中文"],
+  languages:       ["한국어", "English"],
   defaultLanguage: "한국어",
 });
 
@@ -123,6 +128,8 @@ function SocialIcon({ type }: { type: SocialLink["icon"] }) {
 
 // ─── Language Switcher ────────────────────────────────────────────────────────
 
+
+
 function FooterLangSwitcher({
   languages, selected, onSelect,
 }: {
@@ -161,7 +168,7 @@ function FooterLangSwitcher({
             {languages.map((lang) => (
               <li key={lang} role="option" aria-selected={lang === selected}>
                 <button
-                  onClick={() => { onSelect(lang); setOpen(false); }}
+                  onClick={() => { onSelect(lang=='English'?'en':'ko'); setOpen(false); }}
                   className={`w-full text-left px-4 py-2 text-[13px] transition-colors duration-150 ${
                     lang === selected
                       ? "text-gray-950 font-semibold bg-gray-50"
@@ -183,6 +190,14 @@ function FooterLangSwitcher({
 
 export default function Footer() {
   const [selectedLang, setSelectedLang] = useState(config.defaultLanguage);
+  const router = useRouter()
+const pathname=usePathname()
+
+const changeLanguage = (locale: string) => {
+    const segments = pathname.split("/");
+    segments[1] = locale; // replace current locale
+    router.push(segments.join("/"));
+  };
 
   return (
     <footer className="w-full bg-white border-t border-gray-100">
@@ -269,7 +284,7 @@ export default function Footer() {
             <FooterLangSwitcher
               languages={config.languages}
               selected={selectedLang}
-              onSelect={setSelectedLang}
+              onSelect={changeLanguage}
             />
 
           </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 // next@16.1.6 · react@19.2.3 · zod@^4.3.6 · tailwindcss@^4
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -148,7 +149,7 @@ function LanguageSwitcher({
             {languages.map((lang) => (
               <li key={lang} role="option" aria-selected={lang === selected}>
                 <button
-                  onClick={() => { onSelect(lang); setOpen(false); }}
+                  onClick={() => { onSelect(lang==='English'?'en':'ko'); setOpen(false); }}
                   className={`w-full text-left px-4 py-2 text-[13px] transition-colors duration-150 ${
                     lang === selected
                       ? "text-gray-950 font-semibold bg-gray-50"
@@ -263,6 +264,14 @@ function MobileMenu({
 export default function Navbar() {
   const [selectedLang, setSelectedLang] = useState(config.defaultLanguage);
   const [mobileOpen, setMobileOpen]     = useState(false);
+  const router = useRouter()
+  const pathname=usePathname()
+  
+  const changeLanguage = (locale: string) => {
+      const segments = pathname.split("/");
+      segments[1] = locale; // replace current locale
+      router.push(segments.join("/"));
+    };
 
   return (
     <header className="relative w-full bg-white py-6">
@@ -276,7 +285,7 @@ export default function Navbar() {
             <LanguageSwitcher
               languages={config.languages}
               selected={selectedLang}
-              onSelect={setSelectedLang}
+              onSelect={changeLanguage}
             />
           </div>
           <CTAButtons secondary={config.ctaSecondary} primary={config.ctaPrimary} />
@@ -301,7 +310,7 @@ export default function Navbar() {
         primary={config.ctaPrimary}
         languages={config.languages}
         selectedLang={selectedLang}
-        onSelectLang={setSelectedLang}
+        onSelectLang={changeLanguage}
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
       />
