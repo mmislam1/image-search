@@ -56,7 +56,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface SignInPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: 'en'|'ko' }>;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────

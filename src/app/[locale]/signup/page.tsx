@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
 import {
   signUpThunk,
   googleAuthThunk,
-  verifyEmailThunk,
   resetEmailVerify,
   selectSignupStatus,
   selectEmailVerifyStatus,
@@ -96,7 +95,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface SignUpPageProps {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: 'en'|'ko' }>;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
