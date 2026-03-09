@@ -146,8 +146,8 @@ function LanguageSwitcher({
             aria-label="Select language"
             className={`absolute ${dropUp ? "bottom-full mb-2" : "top-full mt-2"} right-0 w-32 bg-white border border-gray-200 rounded-xl shadow-lg shadow-black/5 py-1 z-40`}
           >
-            {languages.map((lang) => (
-              <li key={lang} role="option" aria-selected={lang === selected}>
+            {languages.map((lang,i) => (
+              <li key={i} role="option" aria-selected={lang === selected}>
                 <button
                   onClick={() => { onSelect(lang==='English'?'en':'ko'); setOpen(false); }}
                   className={`w-full text-left px-4 py-2 text-[13px] transition-colors duration-150 ${
@@ -262,17 +262,27 @@ function MobileMenu({
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
 export default function Navbar() {
-  const [selectedLang, setSelectedLang] = useState(config.defaultLanguage);
+
   const [mobileOpen, setMobileOpen]     = useState(false);
   const router = useRouter()
   const pathname=usePathname()
+  
+  const currentLanguage=()=>{
+  const segments = pathname.split("/");
+  const curr=segments[1]==="en"?config.languages[1]:config.languages[0]
+      return curr
+  }
+  
+    const [selectedLang, setSelectedLang] = useState<string>(currentLanguage());
   
   const changeLanguage = (locale: string) => {
       const segments = pathname.split("/");
       segments[1] = locale; // replace current locale
       router.push(segments.join("/"));
+      const curr=locale==='en'?config.languages[1]:config.languages[0]
+      setSelectedLang(curr)
     };
-
+  
   return (
     <header className="relative w-full bg-white py-6">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between gap-8">

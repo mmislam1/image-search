@@ -189,14 +189,25 @@ function FooterLangSwitcher({
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 export default function Footer() {
-  const [selectedLang, setSelectedLang] = useState(config.defaultLanguage);
+
   const router = useRouter()
 const pathname=usePathname()
+
+
+const currentLanguage=()=>{
+const segments = pathname.split("/");
+const curr=segments[1]==="en"?config.languages[1]:config.languages[0]
+    return curr
+}
+
+  const [selectedLang, setSelectedLang] = useState<string>(currentLanguage());
 
 const changeLanguage = (locale: string) => {
     const segments = pathname.split("/");
     segments[1] = locale; // replace current locale
     router.push(segments.join("/"));
+    const curr=locale==='en'?config.languages[1]:config.languages[0]
+    setSelectedLang(curr)
   };
 
   return (
