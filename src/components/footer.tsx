@@ -1,29 +1,68 @@
 "use client";
 
-// next@16.1.6 · react@19.2.3 · zod@^4.3.6 · tailwindcss@^4
-
 import Link from "next/link";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
-import { StarIcon } from "@/components/navbar"; // shared — single source of truth
-import { useRouter, usePathname } from "next/navigation";
+import { StarIcon } from "@/components/navbar";
 
+// ─── Translations ─────────────────────────────────────────────────────────────
+const translations = {
+  ko: {
+    columns: [
+      {
+        heading: "투스타",
+        links: [
+          { label: "소개",  href: "/about"    },
+          { label: "가격",  href: "/pricing"  },
+          { label: "연구",  href: "/research" },
+          { label: "API",  href: "/api"      },
+          { label: "뉴스",  href: "/news"     },
+          { label: "블로그", href: "/blog"     },
+        ],
+      },
+      {
+        heading: "이용약관 및 정책",
+        links: [
+          { label: "개인정보 보호 정책", href: "/privacy"  },
+          { label: "기타 정책",        href: "/policies" },
+        ],
+      },
+    ],
+    copyright:   "toostar@2026",
+    cookieLabel: "쿠키 관리",
+    cookieHref:  "/cookies",
+  },
+  en: {
+    columns: [
+      {
+        heading: "Toostar",
+        links: [
+          { label: "About",    href: "/about"    },
+          { label: "Pricing",  href: "/pricing"  },
+          { label: "Research", href: "/research" },
+          { label: "API",      href: "/api"      },
+          { label: "News",     href: "/news"     },
+          { label: "Blog",     href: "/blog"     },
+        ],
+      },
+      {
+        heading: "Terms & Policies",
+        links: [
+          { label: "Privacy Policy",    href: "/privacy"  },
+          { label: "Other Policies",    href: "/policies" },
+        ],
+      },
+    ],
+    copyright:   "toostar@2026",
+    cookieLabel: "Cookie Settings",
+    cookieHref:  "/cookies",
+  },
+} as const;
 
-
-
+type Locale = keyof typeof translations;
 
 // ─── Zod v4 schemas ───────────────────────────────────────────────────────────
-
-const FooterLinkSchema = z.object({
-  label: z.string().min(1),
-  href:  z.string().min(1),
-});
-
-const FooterColumnSchema = z.object({
-  heading: z.string().min(1),
-  links:   z.array(FooterLinkSchema).min(1),
-});
-
 const SocialIconEnum = z.enum(["x", "youtube", "linkedin", "github", "instagram", "tiktok"]);
 
 const SocialLinkSchema = z.object({
@@ -32,59 +71,21 @@ const SocialLinkSchema = z.object({
   icon: SocialIconEnum,
 });
 
-const FooterConfigSchema = z.object({
-  columns:         z.array(FooterColumnSchema).min(1),
-  socialLinks:     z.array(SocialLinkSchema),
-  copyright:       z.string().min(1),
-  cookieLabel:     z.string().min(1),
-  cookieHref:      z.string().min(1),
-  languages:       z.array(z.string().min(1)).min(1),
-  defaultLanguage: z.string().min(1),
-});
+type SocialLink = z.infer<typeof SocialLinkSchema>;
 
-type FooterConfig = z.infer<typeof FooterConfigSchema>;
-type SocialLink   = z.infer<typeof SocialLinkSchema>;
+// ─── Static config (language-agnostic) ───────────────────────────────────────
+const socialLinks: SocialLink[] = [
+  { name: "X (Twitter)", href: "https://x.com",         icon: "x"         },
+  { name: "YouTube",     href: "https://youtube.com",   icon: "youtube"   },
+  { name: "LinkedIn",    href: "https://linkedin.com",  icon: "linkedin"  },
+  { name: "GitHub",      href: "https://github.com",    icon: "github"    },
+  { name: "Instagram",   href: "https://instagram.com", icon: "instagram" },
+  { name: "TikTok",      href: "https://tiktok.com",    icon: "tiktok"    },
+];
 
-// ─── Config ───────────────────────────────────────────────────────────────────
+const languages = ["한국어", "English"];
 
-const config: FooterConfig = FooterConfigSchema.parse({
-  columns: [
-    {
-      heading: "투스타",
-      links: [
-        { label: "소개",  href: "/about"    },
-        { label: "가격",  href: "/pricing"  },
-        { label: "연구",  href: "/research" },
-        { label: "API",  href: "/api"      },
-        { label: "뉴스",  href: "/news"     },
-        { label: "블로그", href: "/blog"     },
-      ],
-    },
-    {
-      heading: "이용약관 및 정책",
-      links: [
-        { label: "개인정보 보호 정책", href: "/privacy"  },
-        { label: "기타 정책",        href: "/policies" },
-      ],
-    },
-  ],
-  socialLinks: [
-    { name: "X (Twitter)", href: "https://x.com",         icon: "x"         },
-    { name: "YouTube",     href: "https://youtube.com",   icon: "youtube"   },
-    { name: "LinkedIn",    href: "https://linkedin.com",  icon: "linkedin"  },
-    { name: "GitHub",      href: "https://github.com",    icon: "github"    },
-    { name: "Instagram",   href: "https://instagram.com", icon: "instagram" },
-    { name: "TikTok",      href: "https://tiktok.com",    icon: "tiktok"    },
-  ],
-  copyright:       "toostar@2026",
-  cookieLabel:     "쿠키 관리",
-  cookieHref:      "/cookies",
-  languages:       ["한국어", "English"],
-  defaultLanguage: "한국어",
-});
-
-// ─── Social Icons — all inline SVG paths, no external deps ───────────────────
-
+// ─── Social Icons ─────────────────────────────────────────────────────────────
 function SocialIcon({ type }: { type: SocialLink["icon"] }) {
   switch (type) {
     case "x":
@@ -127,9 +128,6 @@ function SocialIcon({ type }: { type: SocialLink["icon"] }) {
 }
 
 // ─── Language Switcher ────────────────────────────────────────────────────────
-
-
-
 function FooterLangSwitcher({
   languages, selected, onSelect,
 }: {
@@ -147,7 +145,6 @@ function FooterLangSwitcher({
         aria-expanded={open}
         className="flex items-center gap-1.5 text-[13px] text-gray-700 hover:text-gray-950 transition-colors duration-200 font-medium"
       >
-        {/* Globe icon — inline SVG */}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="1.8"
           strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -168,7 +165,7 @@ function FooterLangSwitcher({
             {languages.map((lang) => (
               <li key={lang} role="option" aria-selected={lang === selected}>
                 <button
-                  onClick={() => { onSelect(lang=='English'?'en':'ko'); setOpen(false); }}
+                  onClick={() => { onSelect(lang === "English" ? "en" : "ko"); setOpen(false); }}
                   className={`w-full text-left px-4 py-2 text-[13px] transition-colors duration-150 ${
                     lang === selected
                       ? "text-gray-950 font-semibold bg-gray-50"
@@ -187,27 +184,23 @@ function FooterLangSwitcher({
 }
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
-
 export default function Footer() {
+  const params   = useParams();
+  const router   = useRouter();
+  const pathname = usePathname();
 
-  const router = useRouter()
-const pathname=usePathname()
+  const locale: Locale = (params?.locale as string) === "en" ? "en" : "ko";
+  const t = translations[locale];
 
+  const [selectedLang, setSelectedLang] = useState<string>(
+    locale === "en" ? "English" : "한국어"
+  );
 
-const currentLanguage=()=>{
-const segments = pathname.split("/");
-const curr=segments[1]==="en"?config.languages[1]:config.languages[0]
-    return curr
-}
-
-  const [selectedLang, setSelectedLang] = useState<string>(currentLanguage());
-
-const changeLanguage = (locale: string) => {
+  const changeLanguage = (newLocale: string) => {
     const segments = pathname.split("/");
-    segments[1] = locale; // replace current locale
+    segments[1] = newLocale;
     router.push(segments.join("/"));
-    const curr=locale==='en'?config.languages[1]:config.languages[0]
-    setSelectedLang(curr)
+    setSelectedLang(newLocale === "en" ? "English" : "한국어");
   };
 
   return (
@@ -217,24 +210,20 @@ const changeLanguage = (locale: string) => {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 pt-14 pb-16">
         <div className="flex flex-row md:justify-between gap-12 md:gap-8">
 
-          {/* Logo — top-left, star only, no wordmark */}
+          {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" aria-label="Toostar home" className="text-gray-950 block">
-            
-                    <img src="/logo2.svg" alt="logo2" />
-                
+              <img src="/logo2.svg" alt="logo2" />
             </Link>
           </div>
 
-          {/* Link columns — top-right */}
+          {/* Link columns */}
           <div className="flex flex-row gap-10 sm:gap-20 md:gap-28 lg:gap-36">
-            {config.columns.map((col) => (
+            {t.columns.map((col) => (
               <div key={col.heading} className="flex flex-col gap-5">
-                {/* Column heading */}
                 <p className="text-[13px] font-semibold text-gray-500 tracking-wide">
                   {col.heading}
                 </p>
-                {/* Column links */}
                 <ul className="flex flex-col gap-[14px]">
                   {col.links.map((link) => (
                     <li key={link.href}>
@@ -260,21 +249,20 @@ const changeLanguage = (locale: string) => {
 
           {/* Left: copyright + cookie */}
           <div className="flex flex-col md:flex-row items-center gap-1 md:gap-3 text-[12px] text-gray-500">
-            <span>{config.copyright}</span>
+            <span>{t.copyright}</span>
             <Link
-              href={config.cookieHref}
+              href={t.cookieHref}
               className="hover:text-gray-800 transition-colors duration-200"
             >
-              {config.cookieLabel}
+              {t.cookieLabel}
             </Link>
           </div>
 
           {/* Right: social icons + divider + language */}
           <div className="flex items-center gap-3 sm:gap-4">
 
-            {/* Social icons */}
             <div className="flex items-center gap-3 sm:gap-4">
-              {config.socialLinks.map((social) => (
+              {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
@@ -288,12 +276,10 @@ const changeLanguage = (locale: string) => {
               ))}
             </div>
 
-            {/* Divider */}
             <div className="w-px h-4 bg-gray-300" aria-hidden="true" />
 
-            {/* Language switcher */}
             <FooterLangSwitcher
-              languages={config.languages}
+              languages={languages}
               selected={selectedLang}
               onSelect={changeLanguage}
             />

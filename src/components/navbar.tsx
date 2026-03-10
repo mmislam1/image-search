@@ -1,51 +1,56 @@
 "use client";
 
-import Image from "next/image";
-// next@16.1.6 · react@19.2.3 · zod@^4.3.6 · tailwindcss@^4
-
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
-// ─── Zod v4 schemas ───────────────────────────────────────────────────────────
+// ─── Translations ─────────────────────────────────────────────────────────────
+const translations = {
+  ko: {
+    navItems: [
+      { label: "소개",     href: "/about"    },
+      { label: "기능",     href: "/features" },
+      { label: "가격",     href: "/pricing"  },
+      { label: "비즈니스", href: "/business" },
+    ],
+    ctaSecondary: { label: "문의하기",      href: "/contact" },
+    ctaPrimary:   { label: "무료로 시작 >", href: "/signup"  },
+  },
+  en: {
+    navItems: [
+      { label: "About",    href: "/about"    },
+      { label: "Features", href: "/features" },
+      { label: "Pricing",  href: "/pricing"  },
+      { label: "Business", href: "/business" },
+    ],
+    ctaSecondary: { label: "Contact Us",       href: "/contact" },
+    ctaPrimary:   { label: "Start for Free >", href: "/signup"  },
+  },
+} as const;
 
+type Locale = keyof typeof translations;
+
+// ─── Zod v4 schemas ───────────────────────────────────────────────────────────
 const NavItemSchema = z.object({
   label: z.string().min(1),
-  href: z.union([z.string().url(), z.string().startsWith("/")]),
+  href:  z.union([z.string().url(), z.string().startsWith("/")]),
 });
 
 const NavConfigSchema = z.object({
-  navItems: z.array(NavItemSchema).min(1),
-  languages: z.array(z.string().min(1)).min(1),
+  languages:       z.array(z.string().min(1)).min(1),
   defaultLanguage: z.string().min(1),
-  ctaSecondary: z.object({ label: z.string(), href: z.string() }),
-  ctaPrimary:   z.object({ label: z.string(), href: z.string() }),
 });
 
 type NavItem   = z.infer<typeof NavItemSchema>;
 type NavConfig = z.infer<typeof NavConfigSchema>;
 
-// ─── Config ───────────────────────────────────────────────────────────────────
-
 const config: NavConfig = NavConfigSchema.parse({
-  navItems: [
-    { label: "소개",    href: "/about"    },
-    { label: "기능",    href: "/features" },
-    { label: "가격",    href: "/pricing"  },
-    { label: "비즈니스", href: "/business" },
-  ],
   languages:       ["한국어", "English"],
   defaultLanguage: "한국어",
-  ctaSecondary: { label: "문의하기",     href: "/contact" },
-  ctaPrimary:   { label: "무료로 시작 >", href: "/signup"  },
 });
 
-// ─── StarIcon — exported so footer can import (single source of truth) ────────
-// Pure inline SVG path. No external file, no raster, no xlink, no base64.
-// 4-pointed compass star via cubic-bezier:
-//   top(19,0) → right(38,21) → bottom(19,42) → left(0,21)
-
+// ─── StarIcon — exported so footer can import ─────────────────────────────────
 export function StarIcon({
   size = 22,
   className = "",
@@ -72,20 +77,16 @@ export function StarIcon({
 }
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
-
 function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2 flex-shrink-0 group text-gray-950">
-      
-      
       <img src="/logo.svg" alt="logo" />
     </Link>
   );
 }
 
 // ─── Desktop Nav ──────────────────────────────────────────────────────────────
-
-function DesktopNav({ items }: { items: NavItem[] }) {
+function DesktopNav({ items }: { items:readonly NavItem[] }) {
   return (
     <nav aria-label="Primary navigation" className="hidden font-semibold md:flex items-center gap-8">
       {items.map((item) => (
@@ -102,14 +103,13 @@ function DesktopNav({ items }: { items: NavItem[] }) {
 }
 
 // ─── Language Switcher ────────────────────────────────────────────────────────
-
 function LanguageSwitcher({
   languages, selected, onSelect, dropUp = false,
 }: {
   languages: string[];
-  selected: string;
-  onSelect: (l: string) => void;
-  dropUp?: boolean;
+  selected:  string;
+  onSelect:  (l: string) => void;
+  dropUp?:   boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -121,7 +121,6 @@ function LanguageSwitcher({
         aria-expanded={open}
         className="flex items-center gap-1.5 text-[13px] text-gray-700 hover:text-gray-950 transition-colors duration-200 font-medium"
       >
-        {/* Globe icon — inline SVG */}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="1.8"
           strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -129,7 +128,6 @@ function LanguageSwitcher({
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
         </svg>
         {selected}
-        {/* Chevron icon — inline SVG */}
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2.5"
           strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
@@ -146,10 +144,10 @@ function LanguageSwitcher({
             aria-label="Select language"
             className={`absolute ${dropUp ? "bottom-full mb-2" : "top-full mt-2"} right-0 w-32 bg-white border border-gray-200 rounded-xl shadow-lg shadow-black/5 py-1 z-40`}
           >
-            {languages.map((lang,i) => (
+            {languages.map((lang, i) => (
               <li key={i} role="option" aria-selected={lang === selected}>
                 <button
-                  onClick={() => { onSelect(lang==='English'?'en':'ko'); setOpen(false); }}
+                  onClick={() => { onSelect(lang === "English" ? "en" : "ko"); setOpen(false); }}
                   className={`w-full text-left px-4 py-2 text-[13px] transition-colors duration-150 ${
                     lang === selected
                       ? "text-gray-950 font-semibold bg-gray-50"
@@ -168,12 +166,11 @@ function LanguageSwitcher({
 }
 
 // ─── CTA Buttons ─────────────────────────────────────────────────────────────
-
 function CTAButtons({
   secondary, primary,
 }: {
-  secondary: NavConfig["ctaSecondary"];
-  primary:   NavConfig["ctaPrimary"];
+  secondary: { label: string; href: string };
+  primary:   { label: string; href: string };
 }) {
   return (
     <div className="hidden md:flex items-center gap-2">
@@ -194,18 +191,17 @@ function CTAButtons({
 }
 
 // ─── Mobile Menu ──────────────────────────────────────────────────────────────
-
 function MobileMenu({
   items, secondary, primary, languages, selectedLang, onSelectLang, open, onClose,
 }: {
-  items:         NavItem[];
-  secondary:     NavConfig["ctaSecondary"];
-  primary:       NavConfig["ctaPrimary"];
-  languages:     string[];
-  selectedLang:  string;
-  onSelectLang:  (l: string) => void;
-  open:          boolean;
-  onClose:       () => void;
+  items:        readonly NavItem[];
+  secondary:    { label: string; href: string };
+  primary:      { label: string; href: string };
+  languages:    string[];
+  selectedLang: string;
+  onSelectLang: (l: string) => void;
+  open:         boolean;
+  onClose:      () => void;
 }) {
   if (!open) return null;
 
@@ -229,7 +225,7 @@ function MobileMenu({
             {languages.map((lang) => (
               <button
                 key={lang}
-                onClick={() => onSelectLang(lang)}
+                onClick={() => onSelectLang(lang === "English" ? "en" : "ko")}
                 className={`px-3 py-1.5 text-[12px] rounded-full border transition-all duration-150 ${
                   lang === selectedLang
                     ? "border-gray-900 text-gray-950 font-semibold bg-gray-50"
@@ -260,35 +256,32 @@ function MobileMenu({
 }
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
-
 export default function Navbar() {
+  const params   = useParams();
+  const router   = useRouter();
+  const pathname = usePathname();
 
-  const [mobileOpen, setMobileOpen]     = useState(false);
-  const router = useRouter()
-  const pathname=usePathname()
-  
-  const currentLanguage=()=>{
-  const segments = pathname.split("/");
-  const curr=segments[1]==="en"?config.languages[1]:config.languages[0]
-      return curr
-  }
-  
-    const [selectedLang, setSelectedLang] = useState<string>(currentLanguage());
-  
-  const changeLanguage = (locale: string) => {
-      const segments = pathname.split("/");
-      segments[1] = locale; // replace current locale
-      router.push(segments.join("/"));
-      const curr=locale==='en'?config.languages[1]:config.languages[0]
-      setSelectedLang(curr)
-    };
-  
+  const locale: Locale = (params?.locale as string) === "en" ? "en" : "ko";
+  const t = translations[locale];
+
+  const [selectedLang, setSelectedLang] = useState<string>(
+    locale === "en" ? "English" : "한국어"
+  );
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const changeLanguage = (newLocale: string) => {
+    const segments = pathname.split("/");
+    segments[1] = newLocale;
+    router.push(segments.join("/"));
+    setSelectedLang(newLocale === "en" ? "English" : "한국어");
+  };
+
   return (
     <header className="relative w-full bg-white py-6">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between gap-8">
 
         <Logo />
-        <DesktopNav items={config.navItems} />
+        <DesktopNav items={t.navItems} />
 
         <div className="flex items-center gap-3">
           <div className="hidden md:flex">
@@ -298,9 +291,8 @@ export default function Navbar() {
               onSelect={changeLanguage}
             />
           </div>
-          <CTAButtons secondary={config.ctaSecondary} primary={config.ctaPrimary} />
+          <CTAButtons secondary={t.ctaSecondary} primary={t.ctaPrimary} />
 
-          {/* Hamburger — mobile only */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -315,9 +307,9 @@ export default function Navbar() {
       </div>
 
       <MobileMenu
-        items={config.navItems}
-        secondary={config.ctaSecondary}
-        primary={config.ctaPrimary}
+        items={t.navItems}
+        secondary={t.ctaSecondary}
+        primary={t.ctaPrimary}
         languages={config.languages}
         selectedLang={selectedLang}
         onSelectLang={changeLanguage}
