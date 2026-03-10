@@ -15,6 +15,7 @@ import {
   selectIsAnnual,
 } from '../../../lib/store/pricingSlice'
 import type { Translations, PlanId, Plan } from './pricing'
+import { ChevronRight } from 'lucide-react'
 
 // ─── Gradient constant ─────────────────────────────────────────────────────
 const GRADIENT =
@@ -24,7 +25,7 @@ const GRADIENT =
 function CheckIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="8" style={{ fill: '#ddc0fc' }} />
+      <circle cx="8" cy="8" r="8" style={{ fill: '#000000' }} />
       <path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="#636363" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
@@ -32,7 +33,7 @@ function CheckIcon() {
 function CheckIconLg() {
   return (
     <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="none">
-      <circle cx="10" cy="10" r="10" style={{ fill: '#f3e8ff' }} />
+      <circle cx="10" cy="10" r="10" style={{ fill: '#dddddd' }} />
       <path d="M6 10.5l3 3 5-6" stroke="#636363" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
@@ -53,13 +54,12 @@ function CtaButton({ plan, isLoading, onClick }: { plan: Plan; isLoading: boolea
       onClick={onClick}
       disabled={isLoading}
       className={`
-        w-full py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300
-        focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2
+        w-full border border-black py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 bg-gray-100
+        focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2
         ${isLoading ? 'opacity-60 cursor-not-allowed' : 'hover:scale-[1.02] active:scale-[0.98]'}
-        ${isPrimary ? 'text-white shadow-lg hover:shadow-purple-200/60' : 'border border-purple-200 text-purple-700 bg-white hover:bg-purple-50'}
+        ${isPrimary ? 'text-black shadow-lg hover:shadow-gray-200/60 hover:bg-gray-200' : 'border border-black text-black hover:bg-gray-200'}
       `}
-      style={isPrimary ? { background: GRADIENT, boxShadow: '0 4px 20px rgba(221,192,252,0.6)' } : {}}
-    >
+      >
       {isLoading ? (
         <span className="flex items-center justify-center gap-2">
           <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -102,8 +102,8 @@ function PlanCard({
       {isPopular && (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20">
           <span
-            className="px-4 py-2 rounded-full text-xs font-bold tracking-wider text-purple-900 shadow-md whitespace-nowrap"
-            style={{ background: GRADIENT }}
+            className="px-4 py-2 rounded-full text-xs font-bold tracking-wider text-white shadow-md whitespace-nowrap"
+            style={{ background:  '#000' }}
           >
             {mostPopular}
           </span>
@@ -114,7 +114,7 @@ function PlanCard({
       {isPopular && (
         <div
           className="absolute inset-0 rounded-2xl -z-10 p-[1.5px]"
-          style={{ background: GRADIENT }}
+          style={{ background: '#000' }}
         >
           <div className="absolute inset-0 rounded-2xl bg-white" />
         </div>
@@ -124,20 +124,20 @@ function PlanCard({
         {/* Icon */}
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-          style={{ background: 'linear-gradient(135deg,#f3e8ff,#fce7f3)' }}
+          style={{ background:  '#000' }}
         >
           {plan.id === 'starter' && (
-            <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           )}
           {plan.id === 'professional' && (
-            <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           )}
           {plan.id === 'agency' && (
-            <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           )}
@@ -154,7 +154,7 @@ function PlanCard({
         </div>
 
         {/* Divider */}
-        <div className="h-px mb-6" style={{ background: 'linear-gradient(90deg,#f3e8ff,#fce7f3,#fef9c3)' }} />
+        <div className="h-px mb-6" style={{ background:  '#000' }} />
 
         {/* Features */}
         <ul className="space-y-3 flex-1 mb-7">
@@ -179,7 +179,7 @@ function FaqItem({ question, answer, isOpen, onToggle }: {
   const bodyRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="border border-purple-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
+    <div className="border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between p-6 text-left group"
@@ -187,14 +187,14 @@ function FaqItem({ question, answer, isOpen, onToggle }: {
         <span className="font-semibold text-gray-800 text-sm pr-4">{question}</span>
         <span
           className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
-          style={{ background: isOpen ? GRADIENT : 'linear-gradient(135deg,#f3e8ff,#fce7f3)' }}
+          style={{ background: 'rgb(224, 224, 224)' }}
         >
           <svg
-            className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}
-            style={{ color: '#7c3aed' }}
+            className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`}
+            style={{ color:  '#000' }}
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            <ChevronRight/>
           </svg>
         </span>
       </button>
@@ -260,12 +260,12 @@ export default function PricingClient({
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm shadow-sm border border-purple-100 mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm shadow-sm border border-gray-100 mb-6">
             <span
               className="w-2 h-2 rounded-full animate-pulse"
               style={{}}
             />
-            <span className="text-xs font-medium text-purple-700 tracking-wide">{t.badge}</span>
+            <span className="text-xs font-medium text-gray-700 tracking-wide">{t.badge}</span>
           </div>
 
           <h1
@@ -277,15 +277,15 @@ export default function PricingClient({
           <p className="text-gray-500 text-base max-w-xl mx-auto mb-10">{t.subheading}</p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center gap-3 bg-white rounded-2xl px-2 py-2 shadow-md border border-purple-100">
+          <div className="inline-flex items-center gap-3 bg-white rounded-2xl px-2 py-2 shadow-md border border-gray-100">
             <button
               onClick={() => dispatch(setBillingCycle('monthly'))}
               className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
                 billingCycle === 'monthly'
-                  ? 'text-purple-900 shadow-sm'
+                  ? 'text-white shadow-sm'
                   : 'text-gray-400 hover:text-gray-600'
               }`}
-              style={billingCycle === 'monthly' ? { background: GRADIENT } : {}}
+              style={billingCycle === 'monthly' ? { background:  '#000000'} : {}}
             >
               {t.billing.monthly}
             </button>
@@ -293,10 +293,10 @@ export default function PricingClient({
               onClick={() => dispatch(setBillingCycle('annual'))}
               className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
                 billingCycle === 'annual'
-                  ? 'text-purple-900 shadow-sm'
+                  ? 'text-white shadow-sm'
                   : 'text-gray-400 hover:text-gray-600'
               }`}
-              style={billingCycle === 'annual' ? { background: GRADIENT } : {}}
+              style={billingCycle === 'annual' ? { background:  '#000000'} : {}}
             >
               {t.billing.annual}
               <span className="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
@@ -336,12 +336,12 @@ export default function PricingClient({
           </h2>
           <div
             className="w-16 h-1 rounded-full mx-auto mt-3"
-            style={{ background: GRADIENT }}
+            style={{ background:  '#000' }}
           />
         </div>
-        <div className="bg-white rounded-2xl shadow-lg border border-purple-100 overflow-hidden pb-6">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden pb-6">
           {/* Header row */}
-          <div className="grid grid-cols-4 bg-gray-50 border-b border-purple-100">
+          <div className="grid grid-cols-4 bg-gray-50 border-b border-gray-100">
             <div className="fc text-sm font-bold text-gray-500 tracking-wider">
               Feature
             </div>
@@ -361,8 +361,8 @@ export default function PricingClient({
             return (
               <div
                 key={i}
-                className={`grid grid-cols-4 border-b border-purple-50 last:border-none transition-colors duration-150 cursor-default ${
-                  isHl ? 'bg-purple-50/60' : 'hover:bg-gray-50/70'
+                className={`grid grid-cols-4 border-b border-gray-50 last:border-none transition-colors duration-150 cursor-default ${
+                  isHl ? 'bg-gray-50/60' : 'hover:bg-gray-50/70'
                 }`}
                 onMouseEnter={() => dispatch(setHighlightedFeature(row.label))}
                 onMouseLeave={() => dispatch(setHighlightedFeature(null))}
@@ -396,7 +396,7 @@ export default function PricingClient({
           </h2>
           <div
             className="w-16 h-1 rounded-full mx-auto mt-3"
-            style={{ background: GRADIENT }}
+            style={{ background: '#000' }}
           />
         </div>
         <div className="space-y-3">
