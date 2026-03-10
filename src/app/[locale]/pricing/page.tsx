@@ -12,7 +12,7 @@ async function getTranslations(locale: Locale) {
 }
 
 // ─── Metadata ───────────────────────────────────────────────────────────────
-export async function generateMetadata({
+/*export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>
@@ -26,7 +26,7 @@ export async function generateMetadata({
     title: t.heading,
     description: t.subheading,
   }
-}
+}*/
 
 // ─── Static locale params ───────────────────────────────────────────────────
 export async function generateStaticParams() {
