@@ -3,13 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
   //import { useEffect, useRef, useState } from "react";
-  import TrustedCompanies from "@/components/trustedCompanies";
-import Section3 from "@/components/section3";
-import Section4 from "@/components/section4";
-import TestimonialSlider from "@/components/testimonialSlider";
-import BlogSection from "@/components/blogsection";
-import FinalSection from "@/components/finalsection";
-import Section1 from "@/components/section1";
+  import TrustedCompanies from "@/components/landingPage/trustedCompanies";
+import Section3 from "@/components/landingPage/section3";
+import Section4 from "@/components/landingPage/section4";
+import TestimonialSlider from "@/components/landingPage/testimonialSlider";
+import BlogSection from "@/components/landingPage/blogsection";
+import FinalSection from "@/components/landingPage/finalsection";
+import Section1 from "@/components/landingPage/section1";
 
 
 
